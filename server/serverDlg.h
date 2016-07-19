@@ -6,6 +6,7 @@
 #include "ListeningSocket.h"
 #include "ClientSocket.h"
 #include "../include/message/Message.h"
+#include "SystemMessageDeal.h"
 
 // CserverDlg 对话框
 class CserverDlg : public CDialog
@@ -38,6 +39,8 @@ private:
 	CListeningSocket *m_pListeningSocket;
 	//客户连接套接字列表。
 CPtrList m_connectionList;
+//处理系统消息的累
+CSystemMessageDeal m_systemMessageDeal;
 //处理消息。
 void DataCome(CClientSocket* pSocket, CMessage& pMsg);
 

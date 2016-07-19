@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "server.h"
 #include "serverDlg.h"
+#include "Control.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -221,11 +222,8 @@ while(!pArIn->IsBufferEmpty());
 */
 void CserverDlg::DataCome(CClientSocket* pSocket, CMessage& pMsg)
 {
-switch (pMsg.m_type)
-{
-case MSG_LOGIN:
-	MessageBox(pMsg.m_text);
-	break;
-}
+	const CControl* pControl = CControl::getInstance();
 
+if (pMsg.m_type < 100)
+	m_systemMessageDeal.dataCome(&m_connectionList, pSocket, &pMsg, pControl);
 }
