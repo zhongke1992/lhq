@@ -48,7 +48,8 @@ END_MESSAGE_MAP()
 
 
 CserverDlg::CserverDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CserverDlg::IDD, pParent)
+	: CDialog(CserverDlg::IDD, pParent),
+	CMessageChain(0, 0)//由于此处只是信息处理链的开始，不做消息处理，故此消息处理的最大和最小都写0.
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 //额外的初始化代码
@@ -57,11 +58,10 @@ m_pListeningSocket = NULL;
 
 CserverDlg::~CserverDlg(void)
 {
-	if (NULL != m_pListeningSocket) {
+	if (NULL != m_pListeningSocket) 
 	delete m_pListeningSocket;
 	m_pListeningSocket = NULL;
 	}
-}
 
 void CserverDlg::DoDataExchange(CDataExchange* pDX)
 {
@@ -224,6 +224,16 @@ void CserverDlg::DataCome(CClientSocket* pSocket, CMessage& pMsg)
 {
 	const CControl* pControl = CControl::getInstance();
 
-if (pMsg.m_type < 100)
-	m_systemMessageDeal.dataCome(&m_connectionList, pSocket, &pMsg, pControl);
+	//穿入消息处理链
+	request(&m_connectionList, pSocket, &pMsg, pControl);
 }
+
+	/**
+	* 产生子链实例。
+	* @param
+	* @return
+	*/
+	CMessageChain* CserverDlg::createNextInstance()
+	{
+	return new CSystemMessageDeal(1, 100);
+	}

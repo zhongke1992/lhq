@@ -7,9 +7,10 @@
 #include "ClientSocket.h"
 #include "../include/message/Message.h"
 #include "SystemMessageDeal.h"
+#include "MessageChain.h"
 
 // CserverDlg 对话框
-class CserverDlg : public CDialog
+class CserverDlg : public CDialog, public CMessageChain
 {
 // 构造
 public:
@@ -39,8 +40,6 @@ private:
 	CListeningSocket *m_pListeningSocket;
 	//客户连接套接字列表。
 CPtrList m_connectionList;
-//处理系统消息的累
-CSystemMessageDeal m_systemMessageDeal;
 //处理消息。
 void DataCome(CClientSocket* pSocket, CMessage& pMsg);
 
@@ -49,4 +48,11 @@ public:
 	void ProcessPendingAccept();
 	//当客户发来消息的时候条用
 	void ProcessPendingRead(CClientSocket* pSocket);
+
+		/**
+	* 产生子链实例。
+	* @param
+	* @return
+	*/
+	virtual CMessageChain* createNextInstance();
 };

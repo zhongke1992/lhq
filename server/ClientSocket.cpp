@@ -10,6 +10,7 @@ m_pDlg = pDlg;
 m_pFile = NULL;
 m_pArIn = NULL;
 m_pArOut = NULL;
+m_pBody = NULL;
 }
 
 CClientSocket::~CClientSocket(void)
@@ -22,6 +23,10 @@ delete m_pArIn;
 
 if (NULL != m_pArOut)
 delete m_pArOut;
+
+if (NULL != m_pBody)
+	delete m_pBody;
+m_pBody = NULL;
 }
 
 void CClientSocket::init()

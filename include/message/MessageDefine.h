@@ -6,7 +6,7 @@
 小于100的位系统消息。
 */
 
-#define MSG_VOID -1//空消息
+#define MSG_VOID 0//空消息
 #define MSG_LOGIN 1//登陆
 
 /*

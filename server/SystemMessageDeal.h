@@ -1,4 +1,5 @@
 #pragma once
+#include "MessageChain.h"
 
 /*
 此类是为了处理系统的各种消息
@@ -8,10 +9,10 @@ class CClientSocket;
 class CMessage;
 class CControl;
 
-class CSystemMessageDeal
+class CSystemMessageDeal : public CMessageChain
 {
 public:
-	CSystemMessageDeal(void);
+	CSystemMessageDeal(unsigned int min, unsigned int max);
 	~CSystemMessageDeal(void);
 
 public:

@@ -6,7 +6,8 @@
 #include "Body.h"
 
 
-CSystemMessageDeal::CSystemMessageDeal(void)
+CSystemMessageDeal::CSystemMessageDeal(unsigned int min, unsigned int max)
+	:CMessageChain(min, max)
 {
 }
 
@@ -28,13 +29,18 @@ switch (pMessage->m_type)
 case MSG_LOGIN:
 	{
 	//设置用户名和密码，并且产生ID给客户端。
+		static int id = 10000;
 CBody* body = new CBody();
 CString name = pMessage->m_text.Left(pMessage->m_text.Find(","));
 pMessage->m_text.Delete(0, name.GetLength()+1);
-CString password = pMessage->m_text;
-if (body->login(name, password))
+	CString password = pMessage->m_text;
+	if (body->login(name, password))
 {
-}
+	pSocket->setBody(body);
+	//m+text.Format("%s,%s), 
+
+	}
+
 	}
 	break;
 }
