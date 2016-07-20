@@ -31,5 +31,7 @@ void ReceiveMsg(CMessage* pMessage);
 virtual void OnReceive(int nErrorCode);
 inline CArchive* GetIn() { return m_pArIn; }
 inline void setBody(CBody* pBody) { m_pBody = pBody; }
-inline const CBody* getBody() { return m_pBody; }
+inline CBody* getBody() { return m_pBody; }
+	inline bool IsAborted() { return m_pArOut == NULL; }
+void Abort(void);
 };

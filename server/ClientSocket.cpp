@@ -3,6 +3,7 @@
 #include "../include/message/Message.h"
 #include "Resource.h"
 #include "serverDlg.h"
+#include "Body.h"
 
 CClientSocket::CClientSocket(CserverDlg* pDlg)
 {
@@ -57,4 +58,13 @@ void CClientSocket::OnReceive(int nErrorCode)
 
 // TODO: 在此添加专用代码和/或调用基类
 m_pDlg->ProcessPendingRead(this);	
+}
+
+void CClientSocket::Abort(void)
+{
+	if (m_pArOut != NULL){
+		m_pArOut->Abort();
+		delete m_pArOut;
+		m_pArOut = NULL;
+	}
 }

@@ -55,4 +55,24 @@ public:
 	* @return
 	*/
 	virtual CMessageChain* createNextInstance();
+	virtual void OnOK();
+	virtual void OnCancel();
+private:
+	//当服务器即将关闭的时候调用.
+	void CloseServer(void);
+
+	/**
+	* 关闭某个客户端套接字。
+	* @param pSocket 要关闭的套接字。
+	* @return void
+	*/
+	void CserverDlg::CloseSocket(CClientSocket* pSocket);
+
+	/**
+	服务器像客户端发送消息
+	* @param pSocket 发送消息的套接字。
+	* @param pMessage 要发送的消息。
+	* @return void
+	*/
+	void SendMsg(CClientSocket* pSocket, CMessage* pMessage);
 };

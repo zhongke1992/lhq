@@ -5,6 +5,7 @@
 #include "server.h"
 #include "serverDlg.h"
 #include "Control.h"
+#include "Body.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -237,3 +238,104 @@ void CserverDlg::DataCome(CClientSocket* pSocket, CMessage& pMsg)
 	{
 	return new CSystemMessageDeal(1, 100);
 	}
+
+	void CserverDlg::OnOK()
+	{
+		// TODO: 在此添加专用代码和/或调用基类
+		if (IDYES == ::MessageBox(m_hWnd, "确定要关闭服务器吗？", "询问", MB_YESNO))
+		{
+		CloseServer();
+			__super::OnOK();
+		}
+	}
+
+	void CserverDlg::OnCancel()
+	{
+		// TODO: 在此添加专用代码和/或调用基类
+		if (IDYES == ::MessageBox(m_hWnd, "确定要关闭服务器吗？", "询问", MB_YESNO))
+		{
+		CloseServer();
+			__super::OnCancel();
+		}
+	}
+
+	//当服务器即将关闭的时候用以清空所有资源。
+	void CserverDlg::CloseServer(void)
+	{
+	if (NULL != m_pListeningSocket)
+		delete m_pListeningSocket;
+	m_pListeningSocket = NULL;
+
+	CMessage* pMessage = new CMessage();
+	while(!m_connectionList.IsEmpty())
+	{
+	CClientSocket* pSocket = (CClientSocket*)m_connectionList.RemoveHead();
+	if (NULL == pSocket) 
+		continue;
+	if (NULL == pMessage)
+		continue;
+
+	pMessage->m_type = MSG_SERVER_CLOSE;
+	pMessage->m_from = TO_SYSTEM;
+	CBody* pBody = pSocket->getBody();	
+	pMessage->m_to = pBody->getID();
+	pMessage->m_text = "服务器已关闭！";
+
+	SendMsg(pSocket, pMessage);
+
+	if (!pSocket->IsAborted())
+	{
+					pSocket->ShutDown();
+	byte buf[50];
+				while (pSocket->Receive(buf,50) > 0);
+			delete pSocket;
+	}//if
+	}//while
+	delete pMessage;
+	}
+
+	/**
+	* 关闭某个客户端套接字。
+	* @param pSocket 要关闭的套接字。
+	* @return void
+	*/
+	void CserverDlg::CloseSocket(CClientSocket* pSocket)
+	{
+		pSocket->Close();
+
+POSITION pos, temp;
+for (pos=m_connectionList.GetHeadPosition();pos!=NULL;)
+{
+temp = pos;
+CClientSocket* pSock = (CClientSocket*)m_connectionList.GetNext(pos);
+if (pSock == pSocket)
+{
+m_connectionList.RemoveAt(temp);
+break;
+}//if
+}//for
+	
+if (NULL != pSocket)
+	delete pSocket;
+pSocket = NULL;
+	}
+
+	/**
+	服务器像客户端发送消息
+	* @param pSocket 发送消息的套接字。
+	* @param pMessage 要发送的消息。
+	* @return void
+	*/
+	void CserverDlg::SendMsg(CClientSocket* pSocket, CMessage* pMessage)
+	{
+		TRY
+	{
+		pSocket->SendMsg(pMessage);
+	}
+	CATCH(CFileException, e)
+	{
+		pSocket->Abort();
+	}
+	END_CATCH
+	}
+
