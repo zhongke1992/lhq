@@ -7,9 +7,10 @@
 #include "ClientSocket.h"
 #include "../include/message/MessageDefine.h"
 #include "../include/message/Message.h"
+#include "MessageChain.h"
 
 // CclientDlg 对话框
-class CclientDlg : public CDialog
+class CclientDlg : public CDialog, public CMessageChain
 {
 // 构造
 public:
@@ -49,4 +50,13 @@ public:
 	//连接服务器函数，前两个参数是用户名和密码，最后一个参数是是否保存用户名密码。
 	void ConnectServer(const CString name, const CString password, bool save);
 void SendMsg(CMessage* pMsg);
+//当套接字接收到消息的时候调用，用以接收客户端发来的消息。
+void ProcessPendingRead();
+
+	/**
+	* 产生子链实例。
+	* @param
+	* @return
+	*/
+	virtual CMessageChain* createNextInstance();
 };

@@ -23,7 +23,7 @@ else
 ar >> m_type;
 ar >> m_from;
 ar >> m_to;
-ar >> m_text;
+	ar >> m_text;
 }
 }
 

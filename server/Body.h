@@ -26,7 +26,7 @@ public:
 	* @return 成功返回true，否则false。
 	*/
 		bool login(CString name, CString password);
-		inline unsigned int getID() { return m_id; }
+		inline unsigned int getId() { return m_id; }
 		inline CString getName() { return m_name; }
 		inline CString getPassword() { return m_password; }
 };

@@ -4,6 +4,9 @@
 
 CBody::CBody(void)
 {
+m_id = 0;
+m_name = "";
+m_password = "";
 }
 
 CBody::~CBody(void)

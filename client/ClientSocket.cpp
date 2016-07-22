@@ -17,6 +17,7 @@ void CClientSocket::OnReceive(int nErrorCode)
 	// TODO: 在此添加专用代码和/或调用基类
 
 	CSocket::OnReceive(nErrorCode);
+m_pDlg->ProcessPendingRead();
 }
 
 void CClientSocket::init()
@@ -32,10 +33,27 @@ TRY
 {
 pMessage->Serialize(*m_pArOut);
 m_pArOut->Flush();
-delete pMessage;
 }
 CATCH(CFileException, e)
 {
 }
 END_CATCH
+}
+
+/**
+调用用以接收消息。
+* @param pMessage 接收消息的结构体。
+* @return void
+*/
+void CClientSocket::ReceiveMsg(CMessage* pMessage)
+{
+TRY
+	{
+					pMessage->Serialize(*m_pArIn);
+}
+	CATCH(CFileException, e)
+	{
+		m_pArOut->Abort();
+	}
+		END_CATCH
 }

@@ -226,7 +226,7 @@ void CserverDlg::DataCome(CClientSocket* pSocket, CMessage& pMsg)
 	const CControl* pControl = CControl::getInstance();
 
 	//穿入消息处理链
-	request(&m_connectionList, pSocket, &pMsg, pControl);
+request(&m_connectionList, pSocket, &pMsg, pControl);
 }
 
 	/**
@@ -273,25 +273,16 @@ void CserverDlg::DataCome(CClientSocket* pSocket, CMessage& pMsg)
 	if (NULL == pSocket) 
 		continue;
 	if (NULL == pMessage)
-		continue;
+		break;
 
 	pMessage->m_type = MSG_SERVER_CLOSE;
 	pMessage->m_from = TO_SYSTEM;
-	CBody* pBody = pSocket->getBody();	
-	pMessage->m_to = pBody->getID();
+	//CBody* pBody = pSocket->getBody();	
+	pMessage->m_to = 10000;
 	pMessage->m_text = "服务器已关闭！";
 
 	SendMsg(pSocket, pMessage);
-
-	if (!pSocket->IsAborted())
-	{
-					pSocket->ShutDown();
-	byte buf[50];
-				while (pSocket->Receive(buf,50) > 0);
-			delete pSocket;
-	}//if
 	}//while
-	delete pMessage;
 	}
 
 	/**
@@ -314,10 +305,6 @@ m_connectionList.RemoveAt(temp);
 break;
 }//if
 }//for
-	
-if (NULL != pSocket)
-	delete pSocket;
-pSocket = NULL;
 	}
 
 	/**

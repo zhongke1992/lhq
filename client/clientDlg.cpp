@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "client.h"
 #include "clientDlg.h"
+#include "Control.h"
+#include "SystemMessageDeal.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,7 +49,8 @@ END_MESSAGE_MAP()
 
 
 CclientDlg::CclientDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CclientDlg::IDD, pParent)
+	: CDialog(CclientDlg::IDD, pParent),
+	CMessageChain(0, 0)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 m_pLogin = NULL;
@@ -240,3 +243,20 @@ void CclientDlg::SendMsg(CMessage* pMessage)
 m_pSocket->SendMsg(pMessage);
 }
 
+//当套接字接收到消息的时候调用。
+void CclientDlg::ProcessPendingRead(void)
+{
+		static CMessage message;
+		const CControl* control = CControl::getInstance();
+	
+	m_pSocket->ReceiveMsg(&message);
+	request(&message, control);
+}
+
+	/**
+	* 产生子链实例。
+	* @param
+	* @return
+	*/
+	CMessageChain* CclientDlg::createNextInstance()
+	{return new CSystemMessageDeal(1, 100);		}

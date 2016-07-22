@@ -19,11 +19,11 @@ CClientSocket::~CClientSocket(void)
 if (NULL != m_pFile)
 delete m_pFile;
 
-if (NULL != m_pArIn)
-delete m_pArIn;
+//if (NULL != m_pArIn)
+//delete m_pArIn;
 
-if (NULL != m_pArOut)
-delete m_pArOut;
+//if (NULL != m_pArOut)
+//delete m_pArOut;
 
 if (NULL != m_pBody)
 	delete m_pBody;
