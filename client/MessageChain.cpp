@@ -26,7 +26,7 @@ m_next = NULL;
 	* @param pControl 上层控制接口
 	* @return void
 	*/
-	void CMessageChain::request(CMessage* pMessage, const CControl* pControl)
+	void CMessageChain::request(CMessage* pMessage, CControl* pControl)
 	{
 	if (pMessage->m_type >= m_min && pMessage->m_type <= m_max)
 		dataCome(pMessage, pControl);
@@ -52,9 +52,9 @@ m_next = NULL;
 	* @param pControl 上层控制接口
 		* @return void
 	*/
-void CMessageChain::dataCome(CMessage* pMessage, const CControl* pControl)
+void CMessageChain::dataCome(CMessage* pMessage, CControl* pControl)
 	{
-	}
+}
 
 	/**
 	* 产生子链实例。

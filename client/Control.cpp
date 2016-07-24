@@ -11,7 +11,7 @@ CControl::~CControl(void)
 {
 }
 
-const CControl* CControl::getInstance()
+CControl* CControl::getInstance()
 	{
 	if (NULL == m_pControl)
 		m_pControl = new CControl();

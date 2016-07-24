@@ -26,7 +26,7 @@ m_next = NULL;
 	* @param pControl 上层控制接口
 	* @return void
 	*/
-	void CMessageChain::request(CPtrList* pSockets, CClientSocket* pSocket, CMessage* pMessage, const CControl* pControl)
+	void CMessageChain::request(CPtrList* pSockets, CClientSocket* pSocket, CMessage* pMessage, CControl* pControl)
 	{
 	if (pMessage->m_type >= m_min && pMessage->m_type <= m_max)
 		dataCome(pSockets, pSocket, pMessage, pControl);
@@ -51,7 +51,7 @@ if (NULL == (m_next = createNextInstance()))
 	* @param pControl 上层控制接口
 		* @return void
 	*/
-void CMessageChain::dataCome(CPtrList* pSockets, CClientSocket* pSocket, CMessage* pMessage, const CControl* pControl)
+void CMessageChain::dataCome(CPtrList* pSockets, CClientSocket* pSocket, CMessage* pMessage, CControl* pControl)
 	{
 	}
 

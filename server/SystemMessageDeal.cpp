@@ -22,28 +22,44 @@ CSystemMessageDeal::~CSystemMessageDeal(void)
 	* @param pMessage 发送的消息结构体
 	* @param pControl 上层控制接口
 	*/
-	void CSystemMessageDeal::dataCome(CPtrList* pSockets, CClientSocket* pSocket, CMessage* pMessage, const CControl* pControl)
+	void CSystemMessageDeal::dataCome(CPtrList* pSockets, CClientSocket* pSocket, CMessage* pMessage, CControl* pControl)
 	{
+		CMessage* pSendMsg = new CMessage();
+
 switch (pMessage->m_type)
 {
-case MSG_LOGIN:
+	 case MSG_LOGIN:
 	{
+		//获取到所有的用户列表。
+CPtrList bodies;
+pControl->getPbodies(bodies);
 	//设置用户名和密码，并且产生ID给客户端。
-		static int id = 10000;
-CBody* body = new CBody();
+		CBody* pBody = new CBody();
 CString name = pMessage->m_text.Left(pMessage->m_text.Find(","));
 pMessage->m_text.Delete(0, name.GetLength()+1);
 	CString password = pMessage->m_text;
-	if (body->login(name, password))
+	
+	//比对在线列表中是否有重名的，如果有，返回给客户端。
+	if (pBody->login(name, password))
 {
-	pSocket->setBody(body);
-	//m+text.Format("%s,%s), 
+	//登陆成功，先将生成好的用户对象放入套接字对象。
+	pSocket->setBody(pBody);
+	
+	//发送给客户端登陆成功的消息。
+	pSendMsg->m_type = MSG_LOGIN_OK;
+	pSendMsg->m_from = FROM_SYSTEM;
+	pSendMsg->m_to = 1000;
+	pSendMsg->m_text.Format("%d,%s,%s", 1000, pBody->getName(), pBody->getPassword());
 
+	pControl->sendMessage(pSocket, pSendMsg);
 	}
 
 	}
 	break;
 }
+if (NULL != pSendMsg)
+	delete pSendMsg;
+pSendMsg = NULL;
 //end_data_come
 	}
 

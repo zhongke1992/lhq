@@ -34,7 +34,7 @@ static CControl* m_pControl;
 
 public:
 	//¹¤ÓÑ·½·¨
-	static const CControl* getInstance();
+	static CControl* getInstance();
 
 };
 

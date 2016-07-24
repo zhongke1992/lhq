@@ -50,7 +50,7 @@ END_MESSAGE_MAP()
 
 CclientDlg::CclientDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CclientDlg::IDD, pParent),
-	CMessageChain(0, 0)
+	CMessageChain(RINGE_NONE, RINGE_NONE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 m_pLogin = NULL;
@@ -247,7 +247,7 @@ m_pSocket->SendMsg(pMessage);
 void CclientDlg::ProcessPendingRead(void)
 {
 		static CMessage message;
-		const CControl* control = CControl::getInstance();
+		CControl* control = CControl::getInstance();
 	
 	m_pSocket->ReceiveMsg(&message);
 	request(&message, control);
@@ -259,4 +259,4 @@ void CclientDlg::ProcessPendingRead(void)
 	* @return
 	*/
 	CMessageChain* CclientDlg::createNextInstance()
-	{return new CSystemMessageDeal(1, 100);		}
+	{return new CSystemMessageDeal(RINGE_SYSTEM_MIN, RINGE_SYSTEM_MAX);		}

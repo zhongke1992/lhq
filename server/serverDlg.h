@@ -6,7 +6,6 @@
 #include "ListeningSocket.h"
 #include "ClientSocket.h"
 #include "../include/message/Message.h"
-#include "SystemMessageDeal.h"
 #include "MessageChain.h"
 
 // CserverDlg 对话框
@@ -57,7 +56,6 @@ public:
 	virtual CMessageChain* createNextInstance();
 	virtual void OnOK();
 	virtual void OnCancel();
-private:
 	//当服务器即将关闭的时候调用.
 	void CloseServer(void);
 
@@ -75,4 +73,6 @@ private:
 	* @return void
 	*/
 	void SendMsg(CClientSocket* pSocket, CMessage* pMessage);
+
+	inline CPtrList* getConnectionList() { return &m_connectionList; }
 };

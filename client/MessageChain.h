@@ -27,7 +27,7 @@ public:
 	* @param pControl 上层控制接口
 	* @return void
 	*/
-	void request(CMessage* pMessage, const CControl* pControl);
+	void request(CMessage* pMessage, CControl* pControl);
 
 	/**
 	* 产生子链实例。
@@ -42,6 +42,6 @@ public:
 	* @param pControl 上层控制接口
 		* @return void
 	*/
-	virtual void dataCome(CMessage* pMessage, const CControl* pControl);
+	virtual void dataCome(CMessage* pMessage, CControl* pControl);
 };
 

@@ -6,6 +6,7 @@
 #include "serverDlg.h"
 #include "Control.h"
 #include "Body.h"
+#include "SystemMessageDeal.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -120,6 +121,10 @@ BOOL CserverDlg::OnInitDialog()
 	{
 		CDialog::OnCancel();
 	}
+	
+	//初始化控制接口CControl。
+		CControl::getInstance()->setDlg(this);
+		//pControl->setDlg(this);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -223,7 +228,7 @@ while(!pArIn->IsBufferEmpty());
 */
 void CserverDlg::DataCome(CClientSocket* pSocket, CMessage& pMsg)
 {
-	const CControl* pControl = CControl::getInstance();
+	CControl* pControl = CControl::getInstance();
 
 	//穿入消息处理链
 request(&m_connectionList, pSocket, &pMsg, pControl);
