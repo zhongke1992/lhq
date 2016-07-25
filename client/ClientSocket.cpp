@@ -10,6 +10,17 @@ m_pDlg = pDlg;
 
 CClientSocket::~CClientSocket(void)
 {
+	if (NULL != m_pArIn)
+		delete m_pArIn;
+	m_pArIn = NULL;
+
+	if (NULL != m_pArOut)
+		delete m_pArOut;
+	m_pArOut = NULL;
+
+if (NULL != m_pFile)
+	delete m_pFile;
+m_pFile = NULL;
 }
 
 void CClientSocket::OnReceive(int nErrorCode)

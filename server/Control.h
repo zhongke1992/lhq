@@ -55,5 +55,12 @@ public:
 	* @retgurn void
 	*/
 	void sendMessage(CClientSocket* pSocket, CMessage* pMessage);
+
+	/**
+	关闭某客户端套接字
+* @param pSocket 要关闭的客户端套接字。
+* @return void
+*/
+	void closeSocket(CClientSocket* pSocket);
 };
 

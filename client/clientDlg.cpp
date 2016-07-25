@@ -60,11 +60,7 @@ m_pSocket = NULL;
 
 CclientDlg::~CclientDlg()
 {
-if (NULL != m_pLogin)
-{
-delete m_pLogin;
-m_pLogin = NULL;
-}
+//closeSocket();
 }
 
 void CclientDlg::DoDataExchange(CDataExchange* pDX)
@@ -117,6 +113,8 @@ delete m_pLogin;
 		m_pLogin = NULL;
 	}
 
+	//将本对话框的指针放入控制接口
+	CControl::getInstance()->setDlg(this);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -236,6 +234,7 @@ pMessage->m_from = FROM_NONE;
 pMessage->m_to = TO_SYSTEM;
 	pMessage->m_text = name+","+password;
 SendMsg(pMessage);
+delete pMessage;
 }
 
 void CclientDlg::SendMsg(CMessage* pMessage)
@@ -259,4 +258,53 @@ void CclientDlg::ProcessPendingRead(void)
 	* @return
 	*/
 	CMessageChain* CclientDlg::createNextInstance()
-	{return new CSystemMessageDeal(RINGE_SYSTEM_MIN, RINGE_SYSTEM_MAX);		}
+	{
+return new CSystemMessageDeal(RINGE_SYSTEM_MIN, RINGE_SYSTEM_MAX);	
+	}
+
+	/**
+	当客户端即将关闭，或者服务器发来服务器已经关闭的消息时调用。
+	* @param
+	* @return void
+	*/
+	void CclientDlg::closeSocket()
+	{
+	if (NULL != m_pSocket)
+		delete m_pSocket;
+	m_pSocket = NULL;
+	
+	m_bConnected = false;
+	}
+
+	void CclientDlg::OnCancel()
+	{
+		// TODO: 在此添加专用代码和/或调用基类
+
+				closeClient();
+		__super::OnCancel();
+	}
+
+
+	void CclientDlg::OnOK()
+	{
+		// TODO: 在此添加专用代码和/或调用基类
+
+		closeClient();
+		__super::OnOK();
+	}
+
+void CclientDlg::closeClient()
+{
+if (m_bConnected)
+{
+	CMessage* pMessage = new CMessage();
+pMessage->m_type = MSG_CLIENT_CLOSE;
+pMessage->m_from = 1000;
+pMessage->m_to = TO_ALL;
+//此处之后增加客户端ID的判断。
+pMessage->m_text = "客户端断开！";
+SendMsg(pMessage);
+delete pMessage;
+}
+//closeSocket();
+}

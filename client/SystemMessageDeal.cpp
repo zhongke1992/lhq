@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SystemMessageDeal.h"
 #include "../include/message/Message.h"
+#include "Control.h"
 
 
 CSystemMessageDeal::CSystemMessageDeal(unsigned int min, unsigned int max)
@@ -26,11 +27,12 @@ CSystemMessageDeal::~CSystemMessageDeal(void)
 	switch(pMessage->m_type)
 	{
 	case MSG_LOGIN_OK:
-AfxMessageBox(pMessage->m_text);	
+pControl->messageBox(pMessage->m_text);	
 		break;
-	case MSG_SERVER_CLOSE:
-		AfxMessageBox("·þÎñÆ÷");
-		break;
+	case MSG_SERVER_CLOSE:		
+		pControl->closeSocket();
+		pControl->messageBox(pMessage->m_text);
+		break;			
 	default:
 		break;
 	}

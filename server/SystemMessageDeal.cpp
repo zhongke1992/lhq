@@ -56,6 +56,15 @@ pMessage->m_text.Delete(0, name.GetLength()+1);
 
 	}
 	break;
+	 case MSG_CLIENT_CLOSE:
+		 {
+		 pControl->closeSocket(pSocket);
+		 //告诉所有其他客户端，当前客户端离开！
+
+		 }
+		 break;
+	 default:
+		 break;
 }
 if (NULL != pSendMsg)
 	delete pSendMsg;

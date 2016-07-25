@@ -46,6 +46,10 @@ bool m_bConnected;
 //连接套接字对象
 CClientSocket* m_pSocket;
 
+//私有方法
+//当服务器即将关闭的时候，调用通知服务器客户端离开！
+void closeClient();
+
 public:
 	//连接服务器函数，前两个参数是用户名和密码，最后一个参数是是否保存用户名密码。
 	void ConnectServer(const CString name, const CString password, bool save);
@@ -59,4 +63,13 @@ void ProcessPendingRead();
 	* @return
 	*/
 	virtual CMessageChain* createNextInstance();
+
+	/**
+	当客户端即将关闭，或者服务器发来服务器已经关闭的消息时调用。
+	* @param
+	* @return void
+	*/
+	void closeSocket();
+	virtual void OnCancel();
+	virtual void OnOK();
 };
