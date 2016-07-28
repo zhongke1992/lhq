@@ -63,3 +63,19 @@ pBodies.AddTail(pBody);
 	{
 	m_pDlg->CloseSocket(pSocket);
 	}
+
+	/**
+	发送消息给一组人。
+	* @param pSockets 要发送给的人的列表。
+	* @param pMessage 要发送的消息。
+* @return void
+*/
+	void CControl::sendMessage(CPtrList* pSockets, CMessage* pMessage)
+	{
+POSITION pos;
+for (pos=pSockets->GetHeadPosition();NULL!=pos;)
+{
+CClientSocket* pSocket = (CClientSocket*)pSockets->GetNext(pos);
+m_pDlg->SendMsg(pSocket, pMessage);
+}//for
+	}

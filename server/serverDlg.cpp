@@ -299,14 +299,14 @@ request(&m_connectionList, pSocket, &pMsg, pControl);
 	{
 		pSocket->Close();
 
-POSITION pos, temp;
-for (pos=m_connectionList.GetHeadPosition();pos!=NULL;)
+for (int i=0;i<m_connectionList.GetCount();i++)
 {
-temp = pos;
-CClientSocket* pSock = (CClientSocket*)m_connectionList.GetNext(pos);
+	POSITION pos = m_connectionList.FindIndex(i);
+
+CClientSocket* pSock = (CClientSocket*)m_connectionList.GetAt(pos);
 if (pSock == pSocket)
 {
-m_connectionList.RemoveAt(temp);
+m_connectionList.RemoveAt(pos);
 break;
 }//if
 }//for

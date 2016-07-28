@@ -62,5 +62,13 @@ public:
 * @return void
 */
 	void closeSocket(CClientSocket* pSocket);
+
+	/**
+	发送消息给一组人。
+	* @param pSockets 要发送给的人的列表。
+	* @param pMessage 要发送的消息。
+* @return void
+*/
+	void sendMessage(CPtrList* pSockets, CMessage* pMessage);
 };
 

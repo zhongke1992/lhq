@@ -290,7 +290,7 @@ return new CSystemMessageDeal(RINGE_SYSTEM_MIN, RINGE_SYSTEM_MAX);
 		// TODO: 在此添加专用代码和/或调用基类
 
 		closeClient();
-		__super::OnOK();
+		//__super::OnOK();
 	}
 
 void CclientDlg::closeClient()
