@@ -124,7 +124,7 @@ BOOL CserverDlg::OnInitDialog()
 	
 	//初始化控制接口CControl。
 		CControl::getInstance()->setDlg(this);
-		//pControl->setDlg(this);
+
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -185,7 +185,7 @@ CClientSocket *pSocket = new CClientSocket(this);
 if (m_pListeningSocket->Accept(*pSocket))
 {
 	pSocket->init();
-m_connectionList.AddTail(pSocket);
+m_connectionList.push_back(pSocket);
 }
 else//没有连接成功。
 delete pSocket;
@@ -272,9 +272,9 @@ request(&m_connectionList, pSocket, &pMsg, pControl);
 	m_pListeningSocket = NULL;
 
 	CMessage* pMessage = new CMessage();
-	while(!m_connectionList.IsEmpty())
+	for (unsigned int i=0;i<m_connectionList.size();i++)
 	{
-	CClientSocket* pSocket = (CClientSocket*)m_connectionList.RemoveHead();
+		CClientSocket* pSocket = (CClientSocket*)m_connectionList.at(i);
 	if (NULL == pSocket) 
 		continue;
 	if (NULL == pMessage)
@@ -299,18 +299,16 @@ request(&m_connectionList, pSocket, &pMsg, pControl);
 	{
 		pSocket->Close();
 
-for (int i=0;i<m_connectionList.GetCount();i++)
-{
-	POSITION pos = m_connectionList.FindIndex(i);
-
-CClientSocket* pSock = (CClientSocket*)m_connectionList.GetAt(pos);
-if (pSock == pSocket)
-{
-m_connectionList.RemoveAt(pos);
-break;
-}//if
-}//for
-	}
+vector<CClientSocket*>::iterator iter;
+		for (iter=m_connectionList.begin();iter!=m_connectionList.end();iter++)
+		{
+		CClientSocket* pSock = *iter;
+		if (pSocket == pSock)
+		{
+		m_connectionList.erase(iter);
+		}//if
+		}//for
+}
 
 	/**
 	服务器像客户端发送消息

@@ -33,6 +33,17 @@ pControl->messageBox(pMessage->m_text);
 		pControl->closeSocket();
 		pControl->messageBox(pMessage->m_text);
 		break;			
+	case MSG_CLIENT_CLOSE:
+		{
+		pControl->messageBox(pMessage->m_text);	
+		}
+		break;
+	case MSG_LOGIN_FAILURE:
+		{
+		pControl->messageBox(pMessage->m_text);
+		pControl->closeSocket();
+		}
+		break;
 	default:
 		break;
 	}

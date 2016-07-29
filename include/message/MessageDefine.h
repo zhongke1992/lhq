@@ -11,6 +11,7 @@
 #define MSG_SERVER_CLOSE 2//当服务器关闭时发给客户端。
 #define MSG_LOGIN_OK 3//当客户端连接服务器时，服务器告诉客户端登陆成功。
 #define MSG_CLIENT_CLOSE 4//客户端告诉服务器自己已经关闭。
+#define MSG_LOGIN_FAILURE 5//服务器告诉客户端，注册失败，m_text中记录了错误信息。
 
 /*
 关于m_from和m_to的宏定义

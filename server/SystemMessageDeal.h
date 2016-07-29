@@ -23,6 +23,6 @@ public:
 	* @param pMessage 发送的消息结构体
 	* @param pControl 上层控制接口
 	*/
-	void dataCome(CPtrList* pSockets, CClientSocket* pSocket, CMessage* pMessage, CControl* pControl);
+	void dataCome(vector<CClientSocket*>* pSockets, CClientSocket* pSocket, CMessage* pMessage, CControl* pControl);
 };
 

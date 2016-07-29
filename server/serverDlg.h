@@ -38,7 +38,7 @@ private:
 	//监听套接字
 	CListeningSocket *m_pListeningSocket;
 	//客户连接套接字列表。
-CPtrList m_connectionList;
+vector<CClientSocket*> m_connectionList;
 //处理消息。
 void DataCome(CClientSocket* pSocket, CMessage& pMsg);
 
@@ -74,5 +74,5 @@ public:
 	*/
 	void SendMsg(CClientSocket* pSocket, CMessage* pMessage);
 
-	inline CPtrList* getConnectionList() { return &m_connectionList; }
+	inline vector<CClientSocket*>* getConnectionList() { return &m_connectionList; }
 };

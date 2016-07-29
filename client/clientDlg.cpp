@@ -274,6 +274,12 @@ return new CSystemMessageDeal(RINGE_SYSTEM_MIN, RINGE_SYSTEM_MAX);
 	m_pSocket = NULL;
 	
 	m_bConnected = false;
+
+	//将登陆的菜单项目设置成可用。
+	//将登陆菜单项设置成不可用。
+CMenu* pMenu = GetMenu();
+CMenu* pSubMenu = pMenu->GetSubMenu(0);
+pSubMenu->EnableMenuItem(0, MF_BYPOSITION | MF_ENABLED);
 	}
 
 	void CclientDlg::OnCancel()
@@ -306,5 +312,4 @@ pMessage->m_text = "客户端断开！";
 SendMsg(pMessage);
 delete pMessage;
 }
-//closeSocket();
 }

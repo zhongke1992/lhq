@@ -26,19 +26,17 @@ CControl* CControl::getInstance()
 	* @param pBodies 用来获取指针的容器。
 	* @return void.
 	*/
-	void CControl::getPbodies(CPtrList& pBodies)
+	void CControl::getBodies(vector<CClientSocket*>* pSockets, vector<CBody*>& pBodies)
 	{
-	if (NULL == m_pDlg)
-		return;
-//const CserverDlg* pDlg = m_pDlg;
-	CPtrList* pConnectionList = m_pDlg->getConnectionList();
-
-	for (POSITION pos=pConnectionList->GetHeadPosition();pos!=NULL;)
+		vector<CClientSocket*>::iterator iter;
+		for (iter=pSockets->begin();iter!=pSockets->end();iter++)
 	{
-CClientSocket* pSocket = (CClientSocket*)pConnectionList->GetNext(pos);
+CClientSocket* pSocket = *iter;
 CBody* pBody = pSocket->getBody();
 if (NULL != pBody)
-pBodies.AddTail(pBody);
+{
+	pBodies.push_back(pBody);
+}
 	}//for
 	
 	}
@@ -59,10 +57,21 @@ pBodies.AddTail(pBody);
 * @param pSocket 要关闭的客户端套接字。
 * @return void
 */
-	void CControl::closeSocket(CClientSocket* pSocket)
+	void CControl::closeSocket(vector<CClientSocket*>* pSockets, CClientSocket* pSocket)
 	{
-	m_pDlg->CloseSocket(pSocket);
-	}
+		vector<CClientSocket*>::iterator iter;
+
+		for (iter=pSockets->begin();iter!=pSockets->end();iter++)
+		{
+		CClientSocket* pSock = *iter;
+
+		if (pSock == pSocket)
+		{
+			pSockets->erase(iter);
+		break;
+		}//if
+		}//for
+		}
 
 	/**
 	发送消息给一组人。
@@ -70,12 +79,12 @@ pBodies.AddTail(pBody);
 	* @param pMessage 要发送的消息。
 * @return void
 */
-	void CControl::sendMessage(CPtrList* pSockets, CMessage* pMessage)
+	void CControl::sendMessage(vector<CClientSocket*>* pSockets, CMessage* pMessage)
 	{
-POSITION pos;
-for (pos=pSockets->GetHeadPosition();NULL!=pos;)
+		vector<CClientSocket*>::iterator iter;
+		for (iter=pSockets->begin();iter!=pSockets->end();iter++)
 {
-CClientSocket* pSocket = (CClientSocket*)pSockets->GetNext(pos);
+CClientSocket* pSocket = *iter;
 m_pDlg->SendMsg(pSocket, pMessage);
 }//for
 	}

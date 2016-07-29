@@ -8,6 +8,7 @@
 class CserverDlg;
 class CClientSocket;
 class CMessage;
+class CBody;
 
 class CControl
 {
@@ -46,7 +47,7 @@ public:
 	* @param pBodies 用来获取指针的容器。
 	* @return void.
 	*/
-	void getPbodies(CPtrList& pBodies);
+	void getBodies(vector<CClientSocket*>* pSockets, vector<CBody*>& pBodies);
 	
 	/**
 	发送消息给某个客户端。
@@ -61,7 +62,7 @@ public:
 * @param pSocket 要关闭的客户端套接字。
 * @return void
 */
-	void closeSocket(CClientSocket* pSocket);
+	void closeSocket(vector<CClientSocket*>* pSockets, CClientSocket* pSocket);
 
 	/**
 	发送消息给一组人。
@@ -69,6 +70,6 @@ public:
 	* @param pMessage 要发送的消息。
 * @return void
 */
-	void sendMessage(CPtrList* pSockets, CMessage* pMessage);
+	void sendMessage(vector<CClientSocket*>* pSockets, CMessage* pMessage);
 };
 
